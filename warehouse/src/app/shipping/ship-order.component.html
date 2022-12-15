@@ -1,0 +1,88 @@
+<div
+  class="alert"
+  [ngClass]="{
+    'alert-success': order.status === 0,
+    'alert-danger': order.status !== 0
+  }"
+>
+  Order status: Ready to ship
+</div>
+<div [ngSwitch]="order.status">
+  <div class="alert alert-info" *ngSwitchCase="0">
+    <h3>Instructions</h3>
+    <div>
+      <ol>
+        <li>
+          Click a <i>Get best location</i> button and the system will tell you
+          the best place to pick up your item.
+        </li>
+        <li>Pick the items and check the <i>Got it</i> box.</li>
+        <li>
+          After you've picked, packed, and shipped your last item, click
+          <i>Mark as shipped</i>
+        </li>
+      </ol>
+    </div>
+    <p>
+      If there's a problem and you need a supervisor to look at it, hit the
+      "Problem" button.
+    </p>
+  </div>
+  <div class="alert alert-danger" *ngSwitchCase="1">
+    This order has already shipped. Do not pick it.
+  </div>
+  <div class="alert alert-danger" *ngSwitchCase="2">
+    Do not pick this order. A supervisor needs to review it.
+  </div>
+</div>
+<section id="orderInfo">
+  <ul class="list-group">
+    <li class="list-group-item">Order number: {{ order.id }}</li>
+    <li class="list-group-item">Order date: {{ order.orderDate }}</li>
+    <li class="list-group-item">Ship via: {{ order.shipVia }}</li>
+  </ul>
+</section>
+<section id="orderLines">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Got it!</th>
+        <th>Location</th>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Quantity</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let orderLine of order.lines">
+        <td><input type="checkbox" class="big-checkbox" /></td>
+        <td>
+          <ng-template #default>
+            <button class="btn">Get best location</button>
+          </ng-template>
+          <span *ngIf="orderLine.locationID; else default">{{
+            orderLine.locationID
+          }}</span>
+        </td>
+        <td>{{ orderLine.productID }}</td>
+        <td>{{ orderLine.product.name }}</td>
+        <td>{{ orderLine.quantity }}</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+<section id="markAsShipped">
+  <button class="btn btn-lg btn-primary">Mark as shipped</button>
+  <button class="btn btn-lg btn-danger">Problem</button>
+</section>
+<section id="shippingLabel">
+  <h3>Shipping Label</h3>
+  <pre>
+    {{ order.shipName }}
+    {{ order.shipAddress }}
+    {{ order.shipCity }}
+    {{ order.shipRegion }}
+    {{ order.shipCountry }}
+    {{ order.shipPostalCode }}
+  </pre>
+</section>

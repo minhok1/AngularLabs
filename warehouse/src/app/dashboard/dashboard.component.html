@@ -1,0 +1,42 @@
+<section class="card">
+  <h3 class="card-heading text-bg-primary">
+    Orders ready to be picked: <span class="badge">3</span>
+  </h3>
+  <div class="card-body">
+    <p class="alert alert-danger">
+      Our customers are our top priority! Please make sure these orders are
+      picked, packed, and shipped as soon as possible.
+    </p>
+    <p class="alert alert-info">All orders have been taken care of.</p>
+  </div>
+  <div class="container">
+    <div class="header-row row">
+      <div class="col-3">Order</div>
+      <div class="col-4">Date</div>
+      <div class="col-2">Products</div>
+      <div class="col-3">Total</div>
+    </div>
+
+    <div
+      class="container order-row"
+      *ngFor="let order of orders"
+      [routerLink]="'ship/' + order.id"
+    >
+      <div class="row row-1">
+        <div class="col-3">{{ order.id }}</div>
+        <div class="col-4">{{ order.orderDate }}</div>
+        <div class="col-2">?</div>
+        <div class="col-3">{{ order.lines.length }}</div>
+      </div>
+      <div class="row row-2">
+        <div class="col-3"></div>
+        <div class="col-9">
+          {{ order.shipAddress }}, {{ order.shipCity }},
+          {{ order.shipPostalCode }} {{ order.shipCountry }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End of container div -->
+</section>
+<!-- End of panel -->
