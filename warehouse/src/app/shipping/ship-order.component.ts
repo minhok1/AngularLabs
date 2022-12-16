@@ -51,4 +51,20 @@ export class ShipOrderComponent {
     this.order.lines.push(line1);
     this.order.lines.push(line2);
   }
+
+  getBestLocation(orderLine: OrderLine) {
+    orderLine.locationID = '01A1A';
+  }
+
+  markAsShipped(order: Order) {
+    order.status = 1;
+  }
+
+  markWithProblem(order: Order) {
+    order.status = 2;
+  }
+
+  isReadyToShip(order: Order) {
+    return order.lines.every((line) => line.picked);
+  }
 }

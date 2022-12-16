@@ -55,10 +55,18 @@
     </thead>
     <tbody>
       <tr *ngFor="let orderLine of order.lines">
-        <td><input type="checkbox" class="big-checkbox" /></td>
+        <td>
+          <input
+            type="checkbox"
+            class="big-checkbox"
+            [(ngModel)]="orderLine.picked"
+          />
+        </td>
         <td>
           <ng-template #default>
-            <button class="btn">Get best location</button>
+            <button (click)="getBestLocation(orderLine)" class="btn">
+              Get best location
+            </button>
           </ng-template>
           <span *ngIf="orderLine.locationID; else default">{{
             orderLine.locationID
@@ -72,8 +80,16 @@
   </table>
 </section>
 <section id="markAsShipped">
-  <button class="btn btn-lg btn-primary">Mark as shipped</button>
-  <button class="btn btn-lg btn-danger">Problem</button>
+  <button
+    (click)="markAsShipped(order)"
+    class="btn btn-lg btn-primary"
+    [disabled]="!isReadyToShip(order)"
+  >
+    Mark as shipped
+  </button>
+  <button (click)="markWithProblem(order)" class="btn btn-lg btn-danger">
+    Problem
+  </button>
 </section>
 <section id="shippingLabel">
   <h3>Shipping Label</h3>

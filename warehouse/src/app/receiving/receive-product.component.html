@@ -19,19 +19,30 @@
     "Problem" button.
   </p>
 </div>
-<section id="trackingInfo" class="m-5">
+<section
+  id="trackingInfo"
+  class="m-5"
+  [ngClass]="{
+    'text-bg-success': numberInput.valid,
+    'text-bg-danger': numberInput.invalid
+  }"
+>
   <div class="control-group">
     <label class="control-label" for="trackingNumber">Tracking number</label>
     <input
+      #numberInput="ngModel"
+      [(ngModel)]="trackingNumber"
       class="form-control"
       id="trackingNumber"
       required
       pattern="^\d[A-Z]\d{16}$|^\d{14,15}$|^9[2-4]\d{2}( ?\d{4}){4} ?\d{2}$"
     />
   </div>
-  <button class="btn btn-primary btn-large">Continue</button>
+  <button class="btn btn-primary btn-large" (click)="saveTrackingNumber()">
+    Continue
+  </button>
 </section>
-<div>
+<div *ngIf="showForm">
   <section id="productInfo" class="m-5">
     <div class="control-group">
       <label class="control-label" for="productName">Product Name</label>
@@ -45,14 +56,25 @@
     <p>... OR ...</p>
     <div class="control-group">
       <label class="control-label" for="productID">Product ID</label>
-      <input class="form-control" id="productID" />
+      <input class="form-control" id="productID" [(ngModel)]="productID" />
     </div>
     <div class="control-group">
       <label class="control-label" for="quantity">Quantity Received</label>
-      <input class="form-control" id="quantity" step="1" type="number" />
+      <input
+        class="form-control"
+        id="quantity"
+        step="1"
+        type="number"
+        [(ngModel)]="quantity"
+      />
     </div>
     <div class="control-group">
-      <input class="btn btn-primary" type="submit" value="Receive product" />
+      <input
+        class="btn btn-primary"
+        type="submit"
+        (click)="receiveProduct(productID, quantity)"
+        value="Receive product"
+      />
     </div>
   </section>
   <section id="orderContents" class="m-5">
@@ -67,49 +89,21 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr *ngFor="let product of receiveProducts">
           <td>
             <img alt="Fish Sauce" src="assets/images/productImages/8.jpg" />
           </td>
-          <td>7</td>
-          <td>Fish Sauce</td>
-          <td>17</td>
-          <td>04A4D</td>
-        </tr>
-        <tr>
-          <td>
-            <img
-              alt="Jalapeno Ketchup"
-              src="/assets/images/productImages/13.jpg"
-            />
-          </td>
-          <td>12</td>
-          <td>jalapeno Ketchup</td>
-          <td>11</td>
-          <td>04C2C</td>
-        </tr>
-        <tr>
-          <td>
-            <img alt="Mustard" src="/assets/images/productImages/24.jpg" />
-          </td>
-          <td>65</td>
-          <td>Mustard</td>
-          <td>24</td>
-          <td>05D2A</td>
-        </tr>
-        <tr>
-          <td>
-            <img alt="Chewing gum" src="/assets/images/productImages/2.jpg" />
-          </td>
-          <td>23</td>
-          <td>Chewing gum</td>
-          <td>34</td>
-          <td>04D1C</td>
+          <td>{{ product.productID }}</td>
+          <td>Name?</td>
+          <td>{{ product.quantity }}</td>
+          <td>Location?</td>
         </tr>
       </tbody>
     </table>
   </section>
   <section class="m-5">
-    <button class="btn btn-lg">Finished receiving</button>
+    <button class="btn btn-lg" (click)="finishedReceiving()">
+      Finished receiving
+    </button>
   </section>
 </div>
